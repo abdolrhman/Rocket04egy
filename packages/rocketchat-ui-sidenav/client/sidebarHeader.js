@@ -205,6 +205,11 @@ const toolbarButtons = (user) => {
 	}];
 };
 Template.sidebarHeader.helpers({
+	users: [
+		{ text: 'my note1' },
+		{ text: 'my note1' },
+		{text: 'my note1' }
+	],
 	myUserInfo() {
 		const id = Meteor.userId();
 
@@ -230,81 +235,153 @@ Template.sidebarHeader.events({
 		}
 		return this.action && this.action.apply(this, [e]);
 	},
-	'click .sidebar__header .avatar'(e) {
-		if (!(Meteor.userId() == null && RocketChat.settings.get('Accounts_AllowAnonymousRead'))) {
-			const user = Meteor.user();
-			const config = {
-				popoverClass: 'sidebar-header',
-				columns: [
-					{
-						groups: [
-							{
-								title: t('User'),
-								items: [
-									{
-										icon: 'circle',
-										name: t('online'),
-										modifier: 'online',
-										action: () => setStatus('online')
-									},
-									{
-										icon: 'circle',
-										name: t('away'),
-										modifier: 'away',
-										action: () => setStatus('away')
-									},
-									{
-										icon: 'circle',
-										name: t('busy'),
-										modifier: 'busy',
-										action: () => setStatus('busy')
-									},
-									{
-										icon: 'circle',
-										name: t('invisible'),
-										modifier: 'offline',
-										action: () => setStatus('offline')
+	counter() {
+		return Template.instance().counter.get();
+	},
+	'click .avatar'(e) {
+		// if (!(Meteor.userId() == null && RocketChat.settings.get('Accounts_AllowAnonymousRead'))) {
+		// const user = Meteor.user();
+		const config = {
+			popoverClass: 'sidebar-header',
+			columns: [
+				{
+					groups: [
+						{
+							title: t('User'),
+							items: [
+								{
+									icon: 'circle',
+									name: t('online'),
+									modifier: 'online',
+									action: () => setStatus('online')
+								},
+								{
+									icon: 'circle',
+									name: t('away'),
+									modifier: 'away',
+									action: () => setStatus('away')
+								},
+								{
+									icon: 'circle',
+									name: t('busy'),
+									modifier: 'busy',
+									action: () => setStatus('busy')
+								},
+								{
+									icon: 'circle',
+									name: t('invisible'),
+									modifier: 'offline',
+									action: () => setStatus('offline')
+								}
+							]
+						},
+						{
+							items: [
+								{
+									icon: 'user',
+									name: t('My_Account'),
+									type: 'open',
+									id: 'account',
+									action: () => {
+										SideNav.setFlex('accountFlex');
+										SideNav.openFlex();
+										FlowRouter.go('account');
+										popover.close();
 									}
-								]
-							},
-							{
-								items: [
-									{
-										icon: 'user',
-										name: t('My_Account'),
-										type: 'open',
-										id: 'account',
-										action: () => {
-											SideNav.setFlex('accountFlex');
-											SideNav.openFlex();
-											FlowRouter.go('account');
-											popover.close();
-										}
-									},
-									{
-										icon: 'sign-out',
-										name: t('Logout'),
-										type: 'open',
-										id: 'logout',
-										action: () => {
-											Meteor.logout(() => {
-												RocketChat.callbacks.run('afterLogoutCleanUp', user);
-												Meteor.call('logoutCleanUp', user);
-												FlowRouter.go('home');
-												popover.close();
-											});
-										}
-									}
-								]
-							}
-						]
-					}
-				],
-				currentTarget: e.currentTarget,
-				offsetVertical: e.currentTarget.clientHeight + 10
-			};
+								}
+							]
+						}
+					]
+				}
+			],
+			currentTarget: e.currentTarget,
+			offsetVertical: e.currentTarget.clientHeight + 10
+		};
 
-			popover.open(config);
-		}
+		popover.open(config);
+		// }
+	},
+	'click .emojiList'(e) {
+		// if (!(Meteor.userId() == null && RocketChat.settings.get('Accounts_AllowAnonymousRead'))) {
+		// const user = Meteor.user();
+		const config = {
+			popoverClass: 'sidebar-header',
+			columns: [{
+				groups: [{
+					title: t('User Mood'),
+					items: [{
+						icon: 'emoji',
+						name: t('Happy'),
+						modifier: 'online',
+						action: () => setStatus('Happy')
+					},
+					{
+						icon: 'ban',
+						name: t('Sad'),
+						modifier: 'Sad',
+						action: () => setStatus('Sad')
+					},
+					{
+						icon: 'lock',
+						name: t('Uncartain'),
+						modifier: 'Uncartain',
+						action: () => setStatus('Uncartain')
+					},
+					{
+						icon: 'quote',
+						name: t('confused'),
+						modifier: 'confused',
+						action: () => setStatus('confused')
+					}
+					]
+				},
+				{
+					items: [{
+						title: 'Emoji Statistics',
+						icon: 'emoji',
+						name: t('count Emoji Clicks'),
+						type: 'open',
+						id: 'account',
+						action: () => {
+							SideNav.setFlex('accountFlex');
+							SideNav.openFlex();
+							FlowRouter.go('account');
+							popover.close();
+						}
+					},
+					{
+						icon: 'circle',
+						name: t('count happy 1'),
+						modifier: 'online',
+						action: () => setStatus('online')
+					},
+					{
+						icon: 'circle',
+						name: t('count sad 15'),
+						modifier: 'away',
+						action: () => setStatus('away')
+					},
+					{
+						icon: 'circle',
+						name: t('count Uncartain 3'),
+						modifier: 'alert',
+						action: () => setStatus('alert')
+					},
+					{
+						icon: 'circle',
+						name: t('count confused 2'),
+						modifier: 'error',
+						action: () => setStatus('error')
+					}
+					]
+				}
+				]
+			}],
+			currentTarget: e.currentTarget,
+			offsetVertical: e.currentTarget.clientHeight + 10
+		};
+
+		popover.open(config);
+		// }
 	}
 });
