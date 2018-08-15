@@ -5,6 +5,22 @@ const setStatus = status => {
 	popover.close();
 };
 
+const setCounter = instance => {
+	instance.counter.set(instance.counter.get() + 1);
+};
+const setCounter2 = instance => {
+	instance.counter2.set(instance.counter2.get() + 1);
+};
+const setCounter3 = instance => {
+	instance.counter3.set(instance.counter3.get() + 1);
+};
+const setCounter4 = instance => {
+	instance.counter4.set(instance.counter4.get() + 1);
+};
+// const getCounter = instance => {
+// 	return instance().counter.get();
+// };
+
 const viewModeIcon = {
 	extended: 'th-list',
 	medium: 'list',
@@ -210,6 +226,18 @@ Template.sidebarHeader.helpers({
 		{ text: 'my note1' },
 		{text: 'my note1' }
 	],
+	counter() {
+		return Template.instance().counter.get();
+	},
+	counter2() {
+		return Template.instance().counter2.get();
+	},
+	counter3() {
+		return Template.instance().counter3.get();
+	},
+	counter4() {
+		return Template.instance().counter4.get();
+	},
 	myUserInfo() {
 		const id = Meteor.userId();
 
@@ -227,6 +255,13 @@ Template.sidebarHeader.helpers({
 		return toolbarButtons(Meteor.userId()).filter(button => !button.condition || button.condition());
 	}
 });
+Template.sidebarHeader.onCreated(function helloOnCreated() {
+	// counter starts at 0
+	this.counter = new ReactiveVar(0);
+	this.counter2 = new ReactiveVar(0);
+	this.counter3 = new ReactiveVar(0);
+	this.counter4 = new ReactiveVar(0);
+});
 
 Template.sidebarHeader.events({
 	'click .js-button'(e) {
@@ -234,9 +269,6 @@ Template.sidebarHeader.events({
 			e.currentTarget.blur();
 		}
 		return this.action && this.action.apply(this, [e]);
-	},
-	counter() {
-		return Template.instance().counter.get();
 	},
 	'click .avatar'(e) {
 		// if (!(Meteor.userId() == null && RocketChat.settings.get('Accounts_AllowAnonymousRead'))) {
@@ -301,7 +333,9 @@ Template.sidebarHeader.events({
 		popover.open(config);
 		// }
 	},
-	'click .emojiList'(e) {
+	'click .emojiList'(e, instance) {
+		// instance.counter.set(instance.counter.get() + 1);
+
 		// if (!(Meteor.userId() == null && RocketChat.settings.get('Accounts_AllowAnonymousRead'))) {
 		// const user = Meteor.user();
 		const config = {
@@ -313,68 +347,68 @@ Template.sidebarHeader.events({
 						icon: 'emoji',
 						name: t('Happy'),
 						modifier: 'online',
-						action: () => setStatus('Happy')
+						action: () => setCounter(instance)
 					},
 					{
 						icon: 'ban',
 						name: t('Sad'),
 						modifier: 'Sad',
-						action: () => setStatus('Sad')
+						action: () => setCounter2(instance)
 					},
 					{
 						icon: 'lock',
 						name: t('Uncartain'),
 						modifier: 'Uncartain',
-						action: () => setStatus('Uncartain')
+						action: () => setCounter3(instance)
 					},
 					{
 						icon: 'quote',
 						name: t('confused'),
 						modifier: 'confused',
-						action: () => setStatus('confused')
+						action: () => setCounter4(instance)
 					}
 					]
 				},
-				{
-					items: [{
-						title: 'Emoji Statistics',
-						icon: 'emoji',
-						name: t('count Emoji Clicks'),
-						type: 'open',
-						id: 'account',
-						action: () => {
-							SideNav.setFlex('accountFlex');
-							SideNav.openFlex();
-							FlowRouter.go('account');
-							popover.close();
-						}
-					},
-					{
-						icon: 'circle',
-						name: t('count happy 1'),
-						modifier: 'online',
-						action: () => setStatus('online')
-					},
-					{
-						icon: 'circle',
-						name: t('count sad 15'),
-						modifier: 'away',
-						action: () => setStatus('away')
-					},
-					{
-						icon: 'circle',
-						name: t('count Uncartain 3'),
-						modifier: 'alert',
-						action: () => setStatus('alert')
-					},
-					{
-						icon: 'circle',
-						name: t('count confused 2'),
-						modifier: 'error',
-						action: () => setStatus('error')
-					}
-					]
-				}
+				// {
+				// 	items: [{
+				// 		title: 'Emoji Statistics',
+				// 		icon: 'emoji',
+				// 		name: t('count Emoji Clicks'),
+				// 		type: 'open',
+				// 		id: 'account',
+				// 		action: () => {
+				// 			SideNav.setFlex('accountFlex');
+				// 			SideNav.openFlex();
+				// 			FlowRouter.go('account');
+				// 			popover.close();
+				// 		}
+				// 	},
+				// 	{
+				// 		icon: 'circle',
+				// 		name: t(`count happy ${ getCounter } `),
+				// 		modifier: 'online',
+				// 		action: () => setStatus('online')
+				// 	},
+				// 	{
+				// 		icon: 'circle',
+				// 		name: t('count sad'),
+				// 		modifier: 'away',
+				// 		action: () => setStatus('away')
+				// 	},
+				// 	{
+				// 		icon: 'circle',
+				// 		name: t('count uncartain'),
+				// 		modifier: 'alert',
+				// 		action: () => setStatus('alert')
+				// 	},
+				// 	{
+				// 		icon: 'circle',
+				// 		name: t('count confused'),
+				// 		modifier: 'error',
+				// 		action: () => setStatus('error')
+				// 	}
+				// 	]
+				// }
 				]
 			}],
 			currentTarget: e.currentTarget,

@@ -5,9 +5,11 @@
 				{{> avatar username=username}}
 				<div class="sidebar__header-status-bullet sidebar__header-status-bullet--{{status}}"></div>
 			</div>
+				 
+
 			<div class="sidebar__header2-thumb">
 <img src="https://cdn.shopify.com/s/files/1/1061/1924/files/Hugging_Face_Emoji_2028ce8b-c213-4d45-94aa-21e1a0842b4d_large.png?15202324258887420558" width="23px" height="23px" alt="" class="emojiList">
-				<!-- {{> avatar2 }} -->
+<!-- {{> avatar2 }} -->
 
 				<!-- {{> hhhh}} -->
 				<!-- {{> hello}} -->
@@ -27,4 +29,14 @@
 			{{> toolbar}}
 		{{/with}}
 	</header>
+<div class="sidebarItem">
+	<h1 style="color: teal">Emoji Statistics</h1>
+	<hr>
+	<h1 style="color: slateblue">countHappy {{counter}}</h1><br>
+	<h1 style="color: slateblue">countSad {{counter2}}</h1>
+	<br>
+	<h1 style="color: slateblue">countUncartain {{counter3}}</h1>
+	<br>
+	<h1 style="color: slateblue">countConfused {{counter4}}</h1><br>
+	</div>
 </template>
